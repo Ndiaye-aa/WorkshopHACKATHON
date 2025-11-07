@@ -1,0 +1,135 @@
+
+
+# 🏦 VaultComunitário (Community Vault)
+
+**Um cofre multi-assinatura (multisig) descentralizado na rede Stellar, onde retiradas exigem 75% de aprovação dos membros.**
+
+Este projeto é uma submissão para o **Scaffold-Stellar Hackathon**.
+
+-----
+
+## 🚀 Propósito do Hackathon
+
+Este projeto demonstra o poder e a velocidade do `scaffold-stellar` para construir "Primitivos Financeiros" complexos de forma rápida. O `VaultComunitário` é um dApp que resolve um problema real de governança de fundos coletivos (DAOs, tesourarias de equipes, fundos de investimento) usando a segurança da Soroban.
+
+### ✅ Conformidade com o Hackathon
+
+Este projeto cumpre rigorosamente todos os requisitos obrigatórios do hackathon:
+
+1.  **Framework `scaffold-stellar`:** O projeto foi inteiramente inicializado, desenvolvido e gerenciado usando o `scaffold-stellar`. Ele serve como a fundação de todo o dApp.
+2.  **Smart Contract (Rust/Wasm):** O core da lógica está em um Smart Contract Soroban (`/contract`), escrito em Rust. Ele gerencia membros, propostas, votos e a execução de pagamentos.
+3.  **Frontend (React/TS/Vite):** A interface do usuário (`/frontend`) é construída com o template React/TypeScript/Vite fornecido pelo `scaffold-stellar`, fornecendo uma UI para interagir com o contrato.
+4.  **Stellar Wallet Kit:** A autenticação do usuário e todas as assinaturas de transações (criação de propostas, votação, etc.) são tratadas exclusivamente através do **Stellar Wallet Kit**.
+
+-----
+
+## 🎯 O Problema
+
+Gerenciar fundos coletivos é arriscado. Se uma única pessoa detém a chave (single-key) da tesouraria, ela pode ser um ponto único de falha (seja por roubo, perda de acesso ou má-fé).
+
+## 💡 A Solução: VaultComunitário
+
+O `VaultComunitário` implementa um sistema "M-de-N" (neste caso, 75%-de-N) de aprovação.
+
+  * **Depósitos Abertos:** Qualquer pessoa pode depositar fundos (XLM ou tokens Soroban) no cofre.
+  * **Retiradas Seguras:** Ninguém pode retirar fundos sozinho. Uma "Proposta de Retirada" deve ser criada e, em seguida, **aprovada por 75%** dos membros definidos no cofre para que os fundos sejam liberados.
+
+Isso o torna a ferramenta perfeita para DAOs, times de projetos, clubes de investimento ou qualquer grupo que precise de transparência e segurança para sua tesouraria.
+
+-----
+
+## ✨ Funcionalidades (MVP)
+
+  * **Criação de Cofre:** Um usuário pode instanciar um novo cofre, definindo a lista inicial de membros (endereços Stellar).
+  * **Gestão de Fundos:**
+      * Visualizar o saldo total do cofre.
+      * Depositar fundos (enviando diretamente para o endereço do contrato).
+  * **Governança (Core Loop):**
+      * **Propor:** Qualquer membro pode criar uma "Proposta de Retirada", especificando o destinatário e o valor.
+      * **Votar:** Qualquer membro pode aprovar propostas pendentes (limite de um voto por membro por proposta).
+      * **Visualizar Quórum:** A UI exibe claramente o status da votação (ex: "Aprovação: 2 de 3 membros - 66%").
+      * **Executar:** Qualquer pessoa pode "Executar" uma proposta. A função de contrato verificará se o quórum de 75% foi atingido e, somente nesse caso, liberará os fundos.
+
+-----
+
+## 🛠️ Stack Tecnológica
+
+  * **Blockchain:** Stellar Network (via Soroban)
+  * **Framework Principal:** `scaffold-stellar`
+  * **Smart Contract:** Rust
+  * **Frontend:** React, TypeScript, Vite
+  * **Wallet:** Stellar Wallet Kit (Freighter, xBull, etc.)
+
+-----
+
+## 🏃‍♂️ Como Rodar Localmente
+
+Este projeto usa a estrutura padrão do `scaffold-stellar`.
+
+### Pré-requisitos
+
+  * Node.js (v18+)
+  * Rust
+  * Soroban CLI
+  * Docker (para rodar a rede local)
+
+### 1\. Clonar o Repositório
+
+```bash
+git clone [URL_DO_SEU_REPOSITORIO]
+cd vault-comunitario
+```
+
+### 2\. Instalar Dependências
+
+Instale as dependências do frontend e do ambiente de desenvolvimento:
+
+```bash
+npm install
+```
+
+### 3\. Iniciar o Ambiente Local
+
+O `scaffold-stellar` facilita o início de uma rede local (Standalone) e a compilação/deploy dos contratos.
+
+```bash
+# Inicia a rede local Standalone em um contêiner Docker
+npm run local:run
+
+# Em outro terminal, compile e faça o deploy dos contratos
+npm run deploy
+```
+
+### 4\. Iniciar o Frontend
+
+Após o deploy dos contratos, inicie o servidor de desenvolvimento do frontend:
+
+```bash
+npm run dev
+```
+
+Abra [http://localhost:5173](https://www.google.com/search?q=http://localhost:5173) no seu navegador e conecte sua carteira (configurada para a rede "Standalone" ou "Futurenet").
+
+-----
+
+## 🎬 Vídeo de Demonstração
+
+*(Substitua pelo seu link de demonstração final)*
+`[Link para o vídeo no YouTube / Loom / etc.]`
+
+-----
+
+## 🛣️ Próximos Passos (Roadmap)
+
+Dado o tempo de um hackathon, focamos no MVP. O `scaffold-stellar` nos permitiria implementar rapidamente:
+
+  * **SHOULD:** Gestão de Membros (adicionar/remover membros via votação de 75%).
+  * **SHOULD:** Suporte a múltiplos tokens (gerenciar USDC, MUX, etc., além de XLM).
+  * **COULD:** Quórum Dinâmico (permitir que o grupo vote para mudar a regra de 75% para 51%, por exemplo).
+  * **COULD:** Integração DeFi (permitir que o cofre "invista" seus fundos em pools de liquidez, via votação).
+
+-----
+
+## licença
+
+[MIT](https://www.google.com/search?q=LICENSE)
